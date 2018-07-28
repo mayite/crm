@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+
+
+{% block content %}
+
+{% include "stark/class_form.html" %}
+
+<script>
+    function show_option(pop_back_id,pk,text) {
+        console.log(pop_back_id,pk,text);
+
+        var option=document.createElement("option");
+        option.innerHTML=text;
+        option.value=pk;
+        option.selected="selected";
+
+        select=document.getElementById(pop_back_id);
+        select.appendChild(option);
+
+
+    }
+</script>
+{% endblock %}

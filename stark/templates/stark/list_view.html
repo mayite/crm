@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<h3>数据展示</h3>
+
+        <div>
+            <a href="{{ add_url }}" class="btn btn-success">添加数据</a>
+            {% if showlist.conf_obj.search_fields %}
+                <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="q" value="{{ showlist.conf_obj.key_word }}"
+                                   placeholder="关键字">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info">Search</button>
+                </form>
+            {% endif %}
+
+            <form action="" class="form-inline" method="post">
+                {% csrf_token %}
+                <select class="form-control action" name="action">
+                    <option>-----------------------</option>
+
+                    {% for func_dict in showlist.get_actions %}
+                        <option value="{{ func_dict.name }}">{{ func_dict.desc }}</option>
+                    {% endfor %}
+
+                </select>
+                <input type="submit" class="btn btn-warning" style="vertical-align: -8px">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        {% for item in showlist.get_header %}
+                            <td>{{ item }}</td>
+                        {% endfor %}
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data  in showlist.get_body %}
+                        <tr>
+                            {% for foo in data %}
+                                <td>{{ foo }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </form>
+            <div>
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        {{ showlist.pagination.page_html|safe }}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+       {% if showlist.conf_obj.list_filter %}
+        <div class="col-md-3">
+            <div class="filter_region">
+                <div class="alert-info text-center">FILTER</div>
+
+                {% for key,val in showlist.get_filter_links.items %}
+                   <div class="panel panel-default">
+                      <div class="panel-heading">By {{ key|upper }}</div>
+                      <div class="panel-body">
+                           {% for link in val %}
+
+                           <p>{{ link|safe }}</p>
+                           {% endfor %}
+
+                      </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+       {% endif %}
+
+{% endblock %}
